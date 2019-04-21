@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ApiService from './services/ApiService'
+import ImagesList from "./ImagesList/ImagesList";
 
 class App extends Component {
 
@@ -16,19 +17,16 @@ class App extends Component {
      //      console.log(body);
      //  } );
       //this.api.getImages();
-      const api = new ApiService();
-      api.getImages().then((res) => {console.log(res)});
-      debugger;
+      /////////////////
+      // const api = new ApiService();
+      // api.getImages().then((res) => {console.log(res)});
+      // debugger;
+      ///////////////////
   }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-          </p>
-        </header>
-
+        <ImagesList/>
       </div>
     );
   }

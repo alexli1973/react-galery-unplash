@@ -28,7 +28,6 @@ class ApiService {
         return this.getResource();
     }
 
-    ddd = () => {}
 
 
    // getImages: function (xxx) {
