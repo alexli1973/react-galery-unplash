@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ApiService from '../services/ApiService'
 import Image from "../Image/Image";
 import Spinner from "../Spinner/Spinner";
+import Pagination from "../Pagination/Pagination";
 
 export default class ImagesList extends Component {
 
@@ -25,30 +26,64 @@ export default class ImagesList extends Component {
     //     likes: null
     // };
     state = {
-        imagesList: null
+        imagesList: null,
+        page: 1,
+        imagesPerPage: 9,
+        imagesTotal: null,
+        totalPages: null
     };
 
-    constructor() {
-        super();
-    }
+    props = {
+        page: this.state.page
+    };
+
+    // constructor(props) {
+    //     super(props);
+    // }
 
     componentDidMount() {
         this.updateImages();
     }
 
     updateImages() {
+        // const { page } = this.props;
         this.apiService.
-        getImages()
-            .then((imagesList) => {
-                // console.log(image)
+        getResource(this.state.page, this.state.imagesPerPage)
+            .then((res) => {
+                const imagesTotal = res.headers['x-total'];
+                debugger;
                 this.setState({
-                    //name: image.id,
-                    //id: image.id
-                    imagesList
+                    imagesList: res.data,
+                    imagesTotal: imagesTotal,
+                    totalPages: Math.ceil(imagesTotal/this.state.imagesPerPage)
                 });
             });
         debugger;
     }
+
+    // componentDidUpdate(prevState) {
+    //     debugger;
+    //     if(this.state.page !== prevState.page) {
+    //         this.updateImages();
+    //     }
+    // }
+
+    onPageChanged = data=> {
+        this.setState({page: Number(data)});
+        this.updateImages();
+    };
+
+    // getTotalPages() {
+    //     const { imagesTotal, imagesPerPage } = this.state;
+    //     let totalPages = Math.ceil(imagesTotal/imagesPerPage);
+    //     if(imagesTotal) {
+    //         this.setState({
+    //             totalPages: totalPages,
+    //             firstPage: 1,
+    //             lastPage: totalPages
+    //         });
+    //     }
+    // }
 
     render() {
         const { imagesList } = this.state;
@@ -65,9 +100,22 @@ export default class ImagesList extends Component {
 
                 />
             });
-            return(<div>{images}</div>);
+            return (
+                <div>
+                    {images}
+                    <Pagination
+                        imagesTotal={this.state.imagesTotal}
+                        imagesPerPage={this.state.imagesPerPage}
+                        totalPages={this.state.totalPages}
+                        onPageChanged={this.onPageChanged}
+                    />
+                </div>
+            );
         }
-
 
     }
 }
+
+
+
+

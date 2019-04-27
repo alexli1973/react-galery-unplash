@@ -8,24 +8,28 @@ class ApiService {
     //     this.baseUrl = 'https://api.unsplash.com/photos/';
     // }
 
-   static _accessKey = '232b180336ed15f727b1051be98f347b14b406133f75ee1d3457912077a54e22';
+    static _accessKey = '232b180336ed15f727b1051be98f347b14b406133f75ee1d3457912077a54e22';
     _baseUrl = 'https://api.unsplash.com/photos/';
     page = 1;
     per_page = 3;
-    reqUrl = `${this._baseUrl}?client_id=${ApiService._accessKey}&page=${this.page}&per_page=${this.per_page}`;
+    //reqUrl = `${this._baseUrl}?client_id=${ApiService._accessKey}&page=${this.page}&per_page=${this.per_page}`;
+    reqUrl = `${this._baseUrl}?client_id=${ApiService._accessKey}`;
 
-    async getResource() {
-        const res = await axios.get(this.reqUrl);
+    async getResource(page, per_page) {
+        debugger;
+        //const res = await axios.get(this.reqUrl);
+        const res = await axios.get(`${this.reqUrl}&page=${page}&per_page=${per_page}`);
 
-        if(res.status !=200) {
+        if(res.status !== 200) {
             throw new Error(`Could not fetch ${this.reqUrl}` + `, received ${res.status}`);
-            console.log(res);
+           // console.log(res);
         }
-        return  res.data;
+        //return  res.data;
+        return  res;
     }
 
-    getImages() {
-        return this.getResource();
+    getImages(page, per_page) {
+        return this.getResource(page, per_page);
     }
 
 
